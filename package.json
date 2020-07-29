@@ -1,0 +1,152 @@
+{
+  "name": "form-builder",
+  "version": "1.0.0",
+  "description": "form creator",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "npx rollup -w -c ./pkgConfig/rollup.config.dev.js",
+    "build": "npx rollup -c ./pkgConfig/rollup.config.prod.js",
+    "install:trip": "npm install --registry=http://registry.npm.release.ctripcorp.com",
+    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "test": "jest --passWithNoTests -u",
+    "test:coverage": "jest --coverage",
+    "test:prod": "npm run lint && npm run test -- --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.dev.sh.ctripcorp.com:junjiema/form-builder.git"
+  },
+  "keywords": [
+    "form",
+    "builder",
+    "typescript",
+    "react"
+  ],
+  "author": "mark",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/plugin-transform-classes": "^7.5.5",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@rollup/plugin-url": "^4.0.0",
+    "@types/enzyme": "^3.10.4",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.19",
+    "@types/rollup-plugin-json": "^3.0.2",
+    "@types/rollup-plugin-node-resolve": "^4.1.0",
+    "@typescript-eslint/eslint-plugin": "^2.11.0",
+    "@typescript-eslint/parser": "^2.11.0",
+    "autoprefixer": "^9.7.3",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.3",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.17.0",
+    "jest": "^24.9.0",
+    "jest-config": "^24.9.0",
+    "less": "^3.10.3",
+    "prettier": "^1.19.1",
+    "rollup": "^1.25.1",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-clear": "^2.0.7",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-livereload": "^1.0.4",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-progress": "^1.1.1",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-typescript2": "^0.24.3",
+    "rollup-plugin-uglify": "^6.0.3",
+    "ts-jest": "^24.1.0",
+    "tslib": "^1.10.0",
+    "tslint": "^5.20.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.7.0",
+    "@babel/runtime": "^7.6.3",
+    "@types/classnames": "^2.2.9",
+    "@types/react": "^16.9.9",
+    "@types/react-dom": "^16.9.2",
+    "classnames": "^2.2.6",
+    "core-js": "^3.3.3",
+    "identity-obj-proxy": "^3.0.0",
+    "immer": "^7.0.7",
+    "jest-environment-jsdom-fourteen": "^1.0.1",
+    "jest-watch-typeahead": "^0.4.2",
+    "react": "^16.11.0",
+    "react-app-polyfill": "^1.0.5",
+    "react-dom": "^16.11.0",
+    "rxjs": "^6.6.2",
+    "typescript": "^3.9.7"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|mjs|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
+    ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom",
+      "<rootDir>/setup-react-adapter.ts"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "testMatch": [
+      "<rootDir>/**/test/**/*.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "\\.(css|scss)$": "identity-obj-proxy"
+    },
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ]
+  }
+}

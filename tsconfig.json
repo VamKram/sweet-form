@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": ".",
+    "rootDirs": ["src"],
+    "moduleResolution": "node",
+    "target": "es2019",
+    "module":"esnext",
+    "lib": ["es6", "dom", "DOM.Iterable"],
+    "strict": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+     "allowJs": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declarationDir": "dist/types",
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "checkJs": false,
+    "noUnusedLocals": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "preserveConstEnums": true,
+    "noImplicitThis": true,
+    "resolveJsonModule": true,
+    "removeComments": false,
+  },
+  "include": [
+    "src/**/*",
+    "images.d.ts"
+  ],
+  "exclude": ["node_modules", "dist", "config"]
+}
