@@ -9,12 +9,13 @@ interface ITemplateEngine<T extends HashObj> {
 
 export default class TemplateEngine<T extends HashObj> implements ITemplateEngine<T> {
     public static readonly symbolReg: RegExp = /^{{(.+)?}}$/i;
-    public static readonly varReg: RegExp = /[_$a-zA-Z]+/g;
+    public static readonly varReg: RegExp = /[A-Za-z.]+(?!["'a-z])/g;
 
     static isTpl(tpl: string): boolean {
         return TemplateEngine.symbolReg.test(tpl);
     }
     public execute(tpl: string, data?: T, current?: any): TTemplateResult {
+        if (!TemplateEngine.isTpl(tpl)) return tpl;
         let [anchor, variable] = TemplateEngine.symbolReg.exec(tpl) || [];
         if (!(anchor && variable)) {
             console.error('Input Is Invalid: ' + tpl);
@@ -32,8 +33,18 @@ export default class TemplateEngine<T extends HashObj> implements ITemplateEngin
     public expressionCal(input: string, data?: T): TTemplateResult {
         let code = input;
         if (data) {
-            code = input.replace(TemplateEngine.varReg, (current: string) => get(data, current));
+            code = input.replace(TemplateEngine.varReg, (current: string) => {
+                let result = get(data, current);
+                if (['true', 'false'].includes(current)) {
+                    return `!!${current}`
+                }
+                if (typeof result === "string") {
+                    return `"${result}"`;
+                }
+                return result
+            });
         }
+        console.log('>>>>>>>>>code', code)
         return safeEval(code) || '';
     }
 }

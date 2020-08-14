@@ -1,33 +1,32 @@
-import React, { ReactComponentElement } from 'react';
-import './App.less';
-import { FormProvider } from './core';
-import { useFormChange } from './hooks';
+import React, { useRef } from "react";
+import "./App.less";
+import { FormProvider } from "./core";
+import { useFormChange } from "./hooks";
+import { ISchema } from "./types/project";
+import BuildSchema from "./core/builder/buildSchema";
 
-export default function FormRender() {
-    const formData = { a: { b: { c: { data: 111 } } } };
+export default function FormRender({ schema, source }: { schema: ISchema, source: any }) {
+    if (!schema) {
+        console.error("Must have props 'schema'");
+        return null;
+    }
+
     return (
-        <FormProvider<typeof formData> formData={formData}>
-            <Middle />
+        <FormProvider formData={schema} source={source}>
+            <FormContent />
         </FormProvider>
     );
 }
 
-function Middle(): ReactComponentElement<any> {
-    return <Child />;
-}
-
-function Child() {
-    const [state, updater] = useFormChange('a.b.c');
+function FormContent() {
+    const { current: builder } = useRef(new BuildSchema());
+    const [state] = useFormChange<ISchema>('a.b.c');
+    const result = builder.build(state);
+    console.log('>>>>>>>>>state', state);
     return (
-        <div>
+        <div className="pure-g">
             {JSON.stringify(state)}
-            <button
-                onClick={() => {
-                    updater({ data: 232 });
-                }}
-            >
-                +
-            </button>
+            {result}
         </div>
     );
 }

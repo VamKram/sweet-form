@@ -95,7 +95,7 @@ describe("core.ComponentTree", () => {
         ]
       }
     ];
-    const result = new ComponentTreeProduce(new TemplateEngine<HashObj>()).buildTree({data, components} as any);
+    const result = new ComponentTreeProduce().buildTree({data, components} as any);
     console.log('>>>>>>>>>result ', result )
     // (result || []).filter(v => !v.child).forEach(v => {
     //   expect(typeof v.$$component).toBe('function')

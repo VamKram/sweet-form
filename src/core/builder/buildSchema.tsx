@@ -1,38 +1,42 @@
 import {
-    CustomComponent,
     HashObj,
     HashType,
     IBuildTreeParams,
     ISchema,
     TAllComponents,
-    TComponentConfig
+    TComponentConfig,
+    TSchemaLayout
 } from "../../types/project";
 
 import { get, isObject, isUndefined, set } from "../../utils";
 import { FormItemType } from "../../constant";
 import defaultComponents from "../../components/originComponent";
 import React, { ReactElement, ReactNode } from "react";
-import TemplateEngine from "../../helper/template-engine";
+import { Wrapper } from "../../components/wrapper";
+import Manage from "../manage";
+import produce from "immer";
 
-interface IBuildSchema<T, P extends HashObj = HashObj> {
+interface IBuildSchema {
     register(path: string): void;
-    generate(param: TAllComponents[]): ReactElement[] | void | null;
-    build(schema: ISchema): ReactElement | null;
+    generate(param: TAllComponents[], componentLayout: TSchemaLayout): ReactElement[] | void | null;
+    build(schema: ISchema): ReactElement[] | null;
 }
 
-export default class BuildSchema<T, P> implements IBuildSchema<any> {
+export default class BuildSchema implements IBuildSchema {
     static usefulComponent: HashType<ReactNode>;
+    manage: Manage<HashObj>;
 
-    constructor(private engine: TemplateEngine<HashObj>) {
-        this.engine = engine;
+    constructor() {
+        this.manage = Manage.getManageInstance();
     }
-    buildDataTree(dataStruct: HashObj, components: TAllComponents[]): TAllComponents[] | void {
+
+    public buildDataTree(dataStruct: HashObj, components: TAllComponents[]): TAllComponents[] | void {
         if (!Array.isArray(components)) {
             throw new TypeError('ComponentTree->buildDataTree: Wrong Type .Params Must Be Array');
         }
-        const newComponents = [...components];
-        for (let i = 0, len = newComponents.length; i < len; i++) {
-            const componentItem = newComponents[i];
+        const newComponents: TAllComponents[] = [];
+        for (let i = 0, len = components.length; i < len; i++) {
+            const componentItem = components[i];
             if (isUndefined(componentItem)) {
                 throw new Error(`buildDataTree: Component Invalid`);
             }
@@ -41,27 +45,26 @@ export default class BuildSchema<T, P> implements IBuildSchema<any> {
             const currentVal = get(dataStruct, path);
 
             if (isUndefined(currentVal)) {
-                console.error(`buildDataTree: current: ${JSON.stringify(currentVal)}.${path} undefined`);
-                throw new Error(`buildDataTree: current: ${JSON.stringify(currentVal)}.${path} undefined`);
+                throw new Error(
+                    `buildDataTree: current: wrong path ${path}, components should have corresponding component`,
+                );
             }
 
             if (!isObject(currentVal) || type === FormItemType.CUSTOM) {
-                const isTpl = TemplateEngine.isTpl(currentVal);
-                let resultValue = currentVal;
-                if (isTpl) {
-                    resultValue = this.engine.execute(currentVal, dataStruct);
-                }
-                set(componentItem, '$$value', resultValue);
-                set(componentItem, 'value', currentVal);
-                this.buildComponentTree(componentItem);
+                const produceItem = produce(componentItem, draft => {
+                    set(draft, 'value', currentVal);
+                    this.buildComponentTree(draft);
+                });
+                newComponents.push(produceItem);
             }
         }
         return newComponents;
     }
 
-    buildComponentTree(component: TAllComponents, componentConfig?: TComponentConfig) {
+    public buildComponentTree(component: TAllComponents, componentConfig?: TComponentConfig) {
         const { type, typeName } = component;
         let componentType: FormItemType | string = type;
+        console.log('>>>>>>>>>componentConfig', componentConfig);
         if (type === FormItemType.CUSTOM) {
             if (!typeName) {
                 console.error('custom must have typeName');
@@ -71,7 +74,7 @@ export default class BuildSchema<T, P> implements IBuildSchema<any> {
         set(component, '$$component', BuildSchema.usefulComponent[componentType]);
     }
 
-    buildTree(schema: ISchema, customConfig?: IBuildTreeParams): TAllComponents[] | void {
+    public buildTree(schema: ISchema, customConfig?: IBuildTreeParams): TAllComponents[] | void {
         const { component, actions } = customConfig || {};
         console.log('>>>>>>>>>actions', actions);
         BuildSchema.usefulComponent = { ...defaultComponents, ...(component || {}) };
@@ -82,53 +85,59 @@ export default class BuildSchema<T, P> implements IBuildSchema<any> {
         return this.buildDataTree(data, components);
     }
 
-    build(schema: ISchema): ReactElement | null {
+    public build(schema: ISchema): ReactElement[] | null {
         const componentTree = this.buildTree(schema);
-        if (Array.isArray(componentTree)) {
-            const elementBox = componentTree.map(tree => {
-                const { $$component: Component } = tree;
-            });
+        if (componentTree) {
+            return this.generate(componentTree, schema.layout);
         }
-        return undefined;
+        return null;
     }
 
     register(path: string): void {}
 
-    private static createJSX(compAttributes: TAllComponents): ReactElement | void {
-        const { $$component: Component, value, attributes, styles, $$value } = compAttributes;
-        if (Component) return <Component styles={styles} value={$$value || value} attributes={attributes} />;
-    }
-
-    private static createChildJSX(current: CustomComponent, componentSchema: TAllComponents[]){
-
-    }
-
-    private rateEnclosure(params: TAllComponents[]): Map<string, TAllComponents[]> {
-        const map = new Map();
-        params.filter(p => p.path.length === 1).forEach(item => {
-            const path = item.path;
-            map.set(path, [item]);
-        })
-        for (let i = 0, len = params.length; i < len; i++) {
-            const currentItem = params[i];
-            const { path } = currentItem;
-            const currentPathArr = path.split(".");
-            const currentRoot = currentPathArr[0];
-            const mapResult = map.get(currentRoot);
-            if (!mapResult) {
-                throw new Error(`${path} does not have root ${JSON.stringify([...(map.keys() || [])])}`);
-            }
-            const result = mapResult[currentPathArr.length - 1]
-            if (Array.isArray(result)) {
-                mapResult[currentPathArr.length - 1].push(currentItem);
-            }
-            mapResult[currentPathArr.length - 1] = [currentItem];
-            map.set(currentRoot, mapResult);
+    private createJSX(compAttributes: TAllComponents): ReactElement | void {
+        const { $$component: Component, path, attributes, styles, extension, name } = compAttributes;
+        const triggerPath = `result.${path}`;
+        if (Component) {
+            return (
+                <Component
+                    onFormChange={val => this.manage.notifyByPath(triggerPath, val)}
+                    key={name}
+                    path={path}
+                    styles={styles}
+                    value={this.manage.formData as any}
+                    attributes={attributes}
+                    {...extension}
+                />
+            );
         }
-        return map;
     }
 
-    generate(compSchema: TAllComponents[]): ReactElement[] | void | null {
-        const componentDraft = this.rateEnclosure(compSchema)
+    public generate(compSchema: TAllComponents[], componentLayout: TSchemaLayout): ReactElement[] | null {
+        return componentLayout.map(layoutInfo => {
+            if (typeof layoutInfo === 'string') {
+                return <Wrapper key={layoutInfo} title={""}>
+                    {this.generateLayout(compSchema, layoutInfo)}
+                </Wrapper>
+            }
+            const { title, element } = layoutInfo;
+            return (
+                <Wrapper key={title} title={title || ''}>
+                    {element.map(el => {
+                        if (typeof el !== 'string') return this.generate(compSchema, [el]);
+                        return this.generateLayout(compSchema, el);
+                    })}
+                </Wrapper>
+            );
+        });
+    }
+
+    private generateLayout(compSchema: TAllComponents[], layoutInfo: string) {
+        const curComponentSchema = compSchema.find(schema => schema.name === layoutInfo);
+        if (!curComponentSchema) {
+            console.error(`${layoutInfo} is not exist in components`);
+            throw new RangeError(`${layoutInfo} is not exist in components`);
+        }
+        return this.createJSX(curComponentSchema) as ReactElement;
     }
 }

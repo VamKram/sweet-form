@@ -1,17 +1,19 @@
-import { HashObj } from '../../types/project';
+import { ISchema } from '../../types/project';
 import Manage from '../manage';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { SingleContext } from './context';
 
-export interface IFormProvider<T extends HashObj> {
+export interface IFormProvider<T extends ISchema> {
     formData: T;
     children: ReactElement;
+    source?: any
+
 }
 
-export function FormProvider<T>({ formData, children }: IFormProvider<T>) {
-    const Provider = SingleContext.getContext<T>().Provider;
-    const managerIns = Manage.getManageInstance(formData);
-    const [state, setState] = useState<T>(formData);
+export function FormProvider({ formData, children, source }: IFormProvider<ISchema>) {
+    const Provider = SingleContext.getContext().Provider;
+    const managerIns = Manage.getManageInstance(formData, source);
+    const [state, setState] = useState(managerIns.formData);
 
     useEffect(() => {
         const subscription = managerIns.subscribe(setState);

@@ -1,27 +1,11 @@
-import { formChange, TAttributes, TComponentConfig, validator } from '../types/project';
-import React, { CSSProperties } from 'react';
-import { FormItemType } from '../constant';
-
-export interface formBuilderComponentProps {
-    value: any;
-    onFormChange?: formChange;
-    attributes?: Partial<Record<TAttributes, boolean | string>>;
-    styles?: CSSProperties & { row?: number | string };
-    validators?: validator[];
-    [key: string]: any;
-}
-function Input({
-    value = '',
-    onFormChange,
-    attributes = {},
-    styles = {},
-    validators = [],
-}: formBuilderComponentProps) {
-    return <input onChange={onFormChange} value={value} />;
-}
+import { TComponentConfig } from "../types/project";
+import React from "react";
+import { FormItemType } from "../constant";
+import { adaptorComponent } from "./wrapper";
 
 const Config: TComponentConfig = {
-    [FormItemType.INPUT]: Input,
+    [FormItemType.INPUT]: adaptorComponent((props) => <input {...props}/>),
 };
 
 export default Config;
+

@@ -89,4 +89,25 @@ describe('template-engine', () => {
     let result = tplEngine.execute(tpl, mockData, { b: { c: 12 } });
     expect(result).toEqual([1]);
   });
+  it('compare should work', () => {
+    const tpl = '{{a === "a"}}';
+    const mockData = {
+      a: 'a'
+    };
+    const tplEngine = new TemplateEngine();
+    let result = tplEngine.execute(tpl, mockData, { b: { c: 12 } });
+    expect(result).toEqual(true);
+  });
+
+  it('compare should work', () => {
+    const tpl = '{{a.b === "a"}}';
+    const mockData = {
+      a: {
+        b: "a"
+      }
+    };
+    const tplEngine = new TemplateEngine();
+    let result = tplEngine.execute(tpl, mockData);
+    expect(result).toEqual(true);
+  });
 });

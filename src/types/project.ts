@@ -1,6 +1,5 @@
-import { FormItemType, ValidationResult } from '../constant';
-import { CSSProperties, ElementType, ReactElement, ReactNode, ReactType } from 'react';
-import { formBuilderComponentProps } from '../components/originComponent';
+import { FormItemType, ValidationResult } from "../constant";
+import { CSSProperties, ElementType, ReactNode } from "react";
 
 export interface HashObj {
     [key: string]: any;
@@ -20,13 +19,25 @@ interface IValidation {
     warn: string[];
 }
 
-export interface IBaseComponent {
-    type: FormItemType;
+export interface formBuilderComponentProps {
     value: any;
     path: string;
-    $$value: any;
-    $$component?: ElementType<formBuilderComponentProps> | null;
+    onFormChange?: formChange;
     attributes?: Partial<Record<TAttributes, boolean | string>>;
+    styles?: CSSProperties & { row?: number | string };
+    validators?: validator[];
+
+    [key: string]: any;
+}
+
+export interface IBaseComponent {
+    type: FormItemType;
+    name: string;
+    value?: any;
+    path: string;
+    $$value?: any;
+    $$component?: ElementType<formBuilderComponentProps> | null;
+    attributes?: Partial<Record<TAttributes, boolean>>;
     validation?: IValidation;
     styles?: CSSProperties & { row: number | string };
 }
@@ -47,9 +58,14 @@ export type IFormComponentTree<T extends HashObj = HashObj> = T extends { type: 
 export type TAllComponents = CustomComponent & IBaseComponent;
 
 export type TComponents = IFormComponentTree[];
+export type TSchemaLayout = Array<
+    { title?: string; element: (ArrayType<TSchemaLayout> | string)[] } | string
+>;
 export interface ISchema {
     data: HashObj;
     components: TAllComponents[];
+    layout: TSchemaLayout;
+    result?: HashObj;
 }
 
 export type TComponentConfig = { [k in FormItemType]?: ReactNode | null };
@@ -60,3 +76,5 @@ export interface IBuildTreeParams {
     component: HashType<ReactNode>;
     actions: HashType<formChange>;
 }
+
+export type ArrayType<T> = T extends (infer R)[] ? R : never;

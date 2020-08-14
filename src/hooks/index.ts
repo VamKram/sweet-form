@@ -10,3 +10,9 @@ export function useFormChange<T extends HashObj>(path?: string): [T, (data: T) =
     }
     return [state, managerIns.notify];
 }
+
+export function useManage<T extends HashObj>() {
+    const formContext = SingleContext.getContext<T>();
+    const { managerIns } = useContext<IContextParams<T>>(formContext);
+    return managerIns;
+}

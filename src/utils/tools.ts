@@ -76,7 +76,7 @@ export function deepClone(obj: HashObj, hash = new WeakMap()): HashObj {
     return Object.assign(result, ...Object.keys(obj).map(key => ({ [key]: deepClone(obj[key], hash) })));
 }
 
-
 export function pickByKeys(all: any[], keyName: string, keys: string[]) {
-  return all.filter(item => keys.includes(String(item[keyName])));
+    return all.filter(item => keys.includes(String(item[keyName])));
 }
+
