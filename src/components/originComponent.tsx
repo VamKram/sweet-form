@@ -20,7 +20,6 @@ const Config: TComponentConfig = {
         );
     }),
     [FormItemType.SELECT]: adaptorComponent(props => {
-        console.log('>>>>>>>>>props.options ', props )
         return (
             <Select
               mode={props.multiple && "multiple"}
