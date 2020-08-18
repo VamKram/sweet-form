@@ -1,31 +1,31 @@
+import React, { ReactElement, ReactNode } from 'react';
+import { Wrapper } from '../../components/wrapper';
+import Manage from '../manage';
+import produce from 'immer';
 import {
     HashObj,
     HashType,
-    IBuildTreeParams,
     ISchema,
     TAllComponents,
     TComponentConfig,
-    TSchemaLayout
-} from "../../types/project";
+    TSchemaLayout,
+} from '../../types/project';
 
-import { get, isObject, isUndefined, set } from "../../utils";
-import { FormItemType } from "../../constant";
-import defaultComponents from "../../components/originComponent";
-import React, { ReactElement, ReactNode } from "react";
-import { Wrapper } from "../../components/wrapper";
-import Manage from "../manage";
-import produce from "immer";
+import { get, isObject, isUndefined, set } from '../../utils';
+import { FormItemType } from '../../constant';
 
 interface IBuildSchema {
     register(path: string): void;
     generate(param: TAllComponents[], componentLayout: TSchemaLayout): ReactElement[] | void | null;
-    build(schema: ISchema): ReactElement[] | null;
+    build(schema: ISchema, componentLib: HashType<ReactElement>): ReactElement[] | null;
 }
 
 export default class BuildSchema implements IBuildSchema {
-    static usefulComponent: HashType<ReactNode>;
+    components: HashType<ReactNode> = {};
     manage: Manage<HashObj>;
-
+    setComponents(data) {
+        this.components = data;
+    }
     constructor() {
         this.manage = Manage.getManageInstance();
     }
@@ -71,13 +71,11 @@ export default class BuildSchema implements IBuildSchema {
             }
             componentType = typeName;
         }
-        set(component, '$$component', BuildSchema.usefulComponent[componentType]);
+        set(component, '$$component', this.components[componentType]);
     }
 
-    public buildTree(schema: ISchema, customConfig?: IBuildTreeParams): TAllComponents[] | void {
-        const { component, actions } = customConfig || {};
-        console.log('>>>>>>>>>actions', actions);
-        BuildSchema.usefulComponent = { ...defaultComponents, ...(component || {}) };
+    public buildTree(schema: ISchema, componentLib: HashType<ReactElement>): TAllComponents[] | void {
+        this.setComponents(componentLib);
         const { data, components } = schema;
         if (!data || !components) {
             throw new TypeError('ComponentTree::buildTree: Data Or Component Is Invalid');
@@ -85,8 +83,8 @@ export default class BuildSchema implements IBuildSchema {
         return this.buildDataTree(data, components);
     }
 
-    public build(schema: ISchema): ReactElement[] | null {
-        const componentTree = this.buildTree(schema);
+    public build(schema: ISchema, componentLib: HashType<ReactElement>): ReactElement[] | null {
+        const componentTree = this.buildTree(schema, componentLib);
         if (componentTree) {
             return this.generate(componentTree, schema.layout);
         }
@@ -96,12 +94,23 @@ export default class BuildSchema implements IBuildSchema {
     register(path: string): void {}
 
     private createJSX(compAttributes: TAllComponents): ReactElement | void {
-        const { $$component: Component, path, attributes, styles, extension, name } = compAttributes;
+        const {
+            label,
+            $$component: Component,
+            path,
+            attributes,
+            styles,
+            extension,
+            name,
+            options,
+        } = compAttributes;
         const triggerPath = `result.${path}`;
         if (Component) {
             return (
                 <Component
+                    label={label}
                     onFormChange={val => this.manage.notifyByPath(triggerPath, val)}
+                    options={options}
                     key={name}
                     path={path}
                     styles={styles}
@@ -116,9 +125,11 @@ export default class BuildSchema implements IBuildSchema {
     public generate(compSchema: TAllComponents[], componentLayout: TSchemaLayout): ReactElement[] | null {
         return componentLayout.map(layoutInfo => {
             if (typeof layoutInfo === 'string') {
-                return <Wrapper key={layoutInfo} title={""}>
-                    {this.generateLayout(compSchema, layoutInfo)}
-                </Wrapper>
+                return (
+                    <Wrapper key={layoutInfo} title={''}>
+                        {this.generateLayout(compSchema, layoutInfo)}
+                    </Wrapper>
+                );
             }
             const { title, element } = layoutInfo;
             return (

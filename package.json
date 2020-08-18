@@ -49,6 +49,7 @@
     "@types/rollup-plugin-node-resolve": "^4.1.0",
     "@typescript-eslint/eslint-plugin": "^2.11.0",
     "@typescript-eslint/parser": "^2.11.0",
+    "antd": "^4.5.4",
     "autoprefixer": "^9.7.3",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",

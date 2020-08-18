@@ -79,4 +79,3 @@ export function deepClone(obj: HashObj, hash = new WeakMap()): HashObj {
 export function pickByKeys(all: any[], keyName: string, keys: string[]) {
     return all.filter(item => keys.includes(String(item[keyName])));
 }
-

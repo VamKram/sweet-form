@@ -36,9 +36,11 @@ module.exports = [{
     plugins: [
         nodeResolve({ extensions: ['.js', '.jsx', '.ts', '.tsx', '.less'] }),
         commonjs({
+            include: 'node_modules/**',
             namedExports: {
                 react: Object.keys(react),
                 'react-dom': Object.keys(reactDom),
+                'node_modules/react-is/index.js': ['isFragment', 'isMemo']
             },
         }),
         nodeGlobals(),
@@ -56,7 +58,10 @@ module.exports = [{
             extract: false, // 可配置生成绝对路径
             minimize: isProductionEnv,
             extensions: ['css', 'less'],
-            plugins: [autoprefixer]
+            plugins: [autoprefixer],
+            use : [
+                ['less', { javascriptEnabled: true }]
+            ],
         }),
         typescript({
             useTsconfigDeclarationDir: true,

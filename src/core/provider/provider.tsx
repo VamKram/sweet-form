@@ -1,13 +1,12 @@
-import { ISchema } from '../../types/project';
 import Manage from '../manage';
 import React, { ReactElement, useEffect, useState } from 'react';
+import { ISchema } from '../../types/project';
 import { SingleContext } from './context';
 
 export interface IFormProvider<T extends ISchema> {
     formData: T;
     children: ReactElement;
-    source?: any
-
+    source?: any;
 }
 
 export function FormProvider({ formData, children, source }: IFormProvider<ISchema>) {

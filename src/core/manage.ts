@@ -1,9 +1,9 @@
-import { HashObj, ISchema } from "../types/project";
-import { Subject } from "rxjs";
-import { Dispatch, EffectCallback, SetStateAction } from "react";
-import produce from "immer";
-import { get, set, simpleCloneObj } from "../utils";
-import TemplateEngine from "../helper/template-engine";
+import produce from 'immer';
+import TemplateEngine from '../helper/template-engine';
+import { HashObj, ISchema } from '../types/project';
+import { Subject } from 'rxjs';
+import { Dispatch, EffectCallback, SetStateAction } from 'react';
+import { get, set, simpleCloneObj } from '../utils';
 
 interface IManage<T extends HashObj> {
     subscribe(setState: Dispatch<SetStateAction<T>>): EffectCallback;
@@ -57,11 +57,11 @@ export default class Manage<T extends HashObj> implements IManage<T> {
     private buildResultDefaultField() {
         if (this.haveSetDefault) return;
         this.haveSetDefault = true;
-        const allPath: string[] = this.formData.components.map(r => r.path);
-        allPath.forEach(path => {
-            const defaultData =  this.engine.execute(
-              get(this.formData, 'data.' + path, ''),
-              this.source || this.formData.data,
+        const allPath: string[] = this.formData.components?.map(r => r.path);
+        allPath?.forEach(path => {
+            const defaultData = this.engine.execute(
+                get(this.formData, 'data.' + path, ''),
+                this.source || this.formData.data,
             );
             this.formData = produce(this.formData, draft => {
                 set(draft, `result.${path}`, defaultData);
@@ -69,11 +69,8 @@ export default class Manage<T extends HashObj> implements IManage<T> {
         });
     }
 
-    modifyTemplate(value){
-        return this.engine.execute(
-          value,
-          this.formData.result,
-        )
+    modifyTemplate(value, currentData?: any): any {
+        return this.engine.execute(value, currentData || this.formData.result);
     }
 
     private updateData(currentData: T) {

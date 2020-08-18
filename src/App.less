@@ -1,13 +1,23 @@
+@import 'antd/dist/antd.less';
 .pure-g {
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: -8px;
-  margin-right: -8px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -8px;
+    margin-right: -8px;
+}
+
+.hidden {
+    display: none;
 }
 
 .item-1-2 {
-  flex-basis: 45%;
-  padding-left: 8px;
-  padding-right: 8px;
-  margin-bottom: 8px;
+    flex-basis: 45%;
+    margin: 8px;
+    > div {
+        padding-left: 8px;
+    }
+}
+
+.field-label {
+    margin-bottom: 8px;
 }
