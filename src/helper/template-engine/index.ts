@@ -64,10 +64,12 @@ export default class TemplateEngine<T extends HashObj> implements ITemplateEngin
     }
 
     getExpressionHandler(tpl: string, data?: T): TemplateExpression {
-        const [, code] = TemplateExpression.getSymbol(tpl);
         if (!TemplateEngine.isTpl(tpl)) {
             return new PureExpression();
         }
+
+        const [, code] = TemplateExpression.getSymbol(tpl);
+
         if (isTotalWord(code) && !isUndefined(data)) {
             return new VariableExpression();
         }
