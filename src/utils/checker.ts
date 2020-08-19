@@ -1,4 +1,4 @@
-import { CustomComponent } from '../types/project';
+import { CustomComponent, TAsyncConfig } from '../types/project';
 import { FormItemType } from '../constant';
 
 export function isUndefined(param: any): param is undefined {
@@ -27,4 +27,8 @@ export function isString(param: any): param is string {
 
 export function isEmptyArray(params: any) {
     return Array.isArray(params) && params.length === 0;
+}
+
+export function isAsyncConfig(param: any): param is TAsyncConfig {
+    return param?.url && param?.method;
 }

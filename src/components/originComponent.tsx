@@ -2,7 +2,7 @@ import React from 'react';
 import { TComponentConfig } from '../types/project';
 import { FormItemType } from '../constant';
 import { adaptorComponent } from './wrapper';
-import { Checkbox, Input, Select, Radio, Switch, Cascader } from "antd";
+import { Checkbox, Input, Select, Radio, Switch, Cascader } from 'antd';
 const { Option } = Select;
 
 const Config: TComponentConfig = {
@@ -22,23 +22,24 @@ const Config: TComponentConfig = {
     [FormItemType.SELECT]: adaptorComponent(props => {
         return (
             <Select
-              mode={props.multiple && "multiple"}
-              defaultValue={props.value}
-              style={{width: 400}}
-              onChange={props.onChange}>
+                mode={props.multiple && 'multiple'}
+                defaultValue={props.value}
+                style={{ width: 400 }}
+                onChange={props.onChange}
+            >
                 {(props.options || []).map(({ label, value }) => (
-                    <Option key={label} value={value}>{label}</Option>
+                    <Option key={label} value={value}>
+                        {label}
+                    </Option>
                 ))}
             </Select>
         );
     }),
     [FormItemType.RADIO]: adaptorComponent(props => {
         return (
-            <Radio.Group
-              value={props.value}
-              onChange={e => props.onChange(e.target.value)}>
+            <Radio.Group value={props.value} onChange={e => props.onChange(e.target.value)}>
                 {(props.options || []).map(({ label, value }) => (
-                    <Radio value={value}>{label}</Radio >
+                    <Radio value={value}>{label}</Radio>
                 ))}
             </Radio.Group>
         );
@@ -46,19 +47,19 @@ const Config: TComponentConfig = {
     [FormItemType.TEXTAREA]: adaptorComponent(props => {
         return (
             <Input.TextArea
-              disabled={props.disabled}
-              value={props.value}
-              onChange={e => props.onChange(e.target.value)}
+                disabled={props.disabled}
+                value={props.value}
+                onChange={e => props.onChange(e.target.value)}
             />
         );
     }),
     [FormItemType.SWITCH]: adaptorComponent(props => {
         return (
-          <Switch
-            disabled={props.disabled}
-            checked={props.value}
-            onChange={checked => props.onChange(checked)}
-          />
+            <Switch
+                disabled={props.disabled}
+                checked={props.value}
+                onChange={checked => props.onChange(checked)}
+            />
         );
     }),
     [FormItemType.CASCADER]: adaptorComponent(props => {
@@ -96,12 +97,7 @@ const Config: TComponentConfig = {
                 ],
             },
         ];
-        return (
-          <Cascader
-            options={options}
-            onChange={props.onChange}
-          />
-        );
+        return <Cascader options={options} onChange={props.onChange} />;
     }),
 };
 

@@ -2,17 +2,19 @@ import React, { ReactNode, useRef } from 'react';
 import './App.less';
 import { FormProvider } from './core';
 import { useFormChange } from './hooks';
-import { HashType, ISchema } from './types/project';
+import { HashType, ISchema, TOptions } from './types/project';
 import BuildSchema from './core/builder/buildSchema';
 
 export default function FormRender({
     schema,
     source,
+    actions,
     componentLib,
 }: {
     schema: ISchema;
     source: any;
     componentLib: HashType<ReactNode>;
+    actions: HashType<(params: any) => TOptions>;
 }) {
     if (!schema) {
         console.error("Must have props 'schema'");
@@ -20,7 +22,7 @@ export default function FormRender({
     }
 
     return (
-        <FormProvider formData={schema} source={source}>
+        <FormProvider formData={schema} source={source} actions={actions}>
             <FormContent componentLib={componentLib} />
         </FormProvider>
     );
@@ -33,7 +35,9 @@ function FormContent({ componentLib }) {
     console.log('>>>>>>>>>state', state);
     return (
         <div className="pure-g">
-            <div style={{ width: '80%', whiteSpace: "pre-line" }}>{JSON.stringify(state.result || {}, null, 2)}</div>
+            <div style={{ width: '80%', whiteSpace: 'pre-line' }}>
+                {JSON.stringify(state.result || {}, null, 2)}
+            </div>
             {result}
         </div>
     );

@@ -12,7 +12,7 @@ const schema = {
             select1: 'Apple',
             radio: 'Apple',
         },
-        textarea: "",
+        textarea: '',
         gender: '',
         switch: true,
         cascader: [],
@@ -42,7 +42,7 @@ const schema = {
             type: 'select',
             name: 'select',
             label: 'select',
-            options: "{{options}}",
+            options: '{{options}}',
             attributes: {
                 disabled: '{{+test.name % 2 == 1 ? true : false}}',
             },
@@ -52,7 +52,7 @@ const schema = {
             type: 'select',
             name: 'select1',
             label: 'select1',
-            options: "{{options}}",
+            options: '{{options}}',
             attributes: {
                 multiple: true,
                 disabled: '{{+test.name % 2 == 1 ? true : false}}',
@@ -102,13 +102,13 @@ const schema = {
             type: 'switch',
             name: 'switch',
             path: 'switch',
-            label: 'switch'
+            label: 'switch',
         },
         {
             type: 'cascader',
             name: 'cascader',
             path: 'cascader',
-            label: 'cascader'
+            label: 'cascader',
         },
     ],
     layout: [
@@ -119,11 +119,11 @@ const schema = {
             title: '组合',
             element: ['checkbox', 'select'],
         },
-        "radio",
-        "textarea",
-        "switch",
-        "cascader",
-        "select1"
+        'radio',
+        'textarea',
+        'switch',
+        'cascader',
+        'select1',
     ],
     // layout: [
     //     {
@@ -148,10 +148,21 @@ const data = {
         { label: 'Apple', value: 'Apple' },
         { label: 'Pear', value: 'Pear' },
         { label: 'Orange', value: 'Orange' },
-    ]
+    ],
 };
+function formatSelect(val) {
+    console.log('>>>>>>>>>val', val);
+    return [{ label: 'aa', value: 'asad' }];
+}
 
 ReactDOM.render(
-    <FormRender schema={schema as any} source={data} componentLib={demo} />,
+    <FormRender
+        actions={{
+            formatSelect,
+        }}
+        schema={schema as any}
+        source={data}
+        componentLib={demo}
+    />,
     document.getElementById('app'),
 );

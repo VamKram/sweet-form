@@ -1,6 +1,6 @@
 import produce from 'immer';
 import TemplateEngine from '../helper/template-engine';
-import { HashObj, ISchema } from '../types/project';
+import { HashObj, HashType, ISchema, TOptions } from '../types/project';
 import { Subject } from 'rxjs';
 import { Dispatch, EffectCallback, SetStateAction } from 'react';
 import { get, set, simpleCloneObj } from '../utils';
@@ -33,21 +33,22 @@ export default class Manage<T extends HashObj> implements IManage<T> {
         return this.formData;
     }
 
-    static getManageInstance(schema?: ISchema, source?: any) {
+    static getManageInstance(schema?: ISchema, source?: any, actions?: HashType<(params: any) => TOptions>) {
         if (Manage.instance) {
             return Manage.instance;
         }
         if (!schema) {
             throw new Error('Must have schema when create instance!');
         }
-        Manage.instance = new Manage<HashObj>(schema || {}, source);
+        Manage.instance = new Manage<HashObj>(schema || {}, source, actions);
         return Manage.instance;
     }
 
-    constructor(formData: T, public source?: string) {
+    constructor(formData: T, public source?: string, public actions?: HashType<(params: any) => TOptions>) {
         this.formData = formData;
         this._storeForm = simpleCloneObj(formData);
         this.source = source;
+        this.actions = actions;
         this.buildResultDefaultField();
         this.isFreeze = true;
     }

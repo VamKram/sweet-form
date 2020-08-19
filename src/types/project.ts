@@ -18,14 +18,26 @@ interface IValidation {
     error: string[];
     warn: string[];
 }
-export type TAttributesProps = Partial<Record<TAttributes, boolean | string>>;
+
+export type TAjaxMethod = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'getJSON';
+export type TAsyncConfig = {
+    url: string;
+    method: TAjaxMethod;
+    formatAction: string;
+    body?: any;
+    header?: Object;
+};
+export type TAttributesProps = Partial<Record<TAttributes, boolean | string | TAsyncConfig>>;
+
+export type TOptions = Array<{ label: string; value: any }>;
 
 export interface commonComponentProps extends TAttributesProps {
     value: any;
     path: string;
     label: string;
-    options: Array<{ label: string; value: any }> | string;
+    options: TOptions | string;
     onChange: formChange;
+    onSearch: formChange;
     styles?: CSSProperties & { row?: number | string };
     validators?: validator[];
 }
@@ -34,9 +46,9 @@ export interface formBuilderComponentProps {
     value: any;
     path: string;
     label: string;
-    options: Array<{ label: string; value: any }> | string;
+    options: TOptions | string;
     onFormChange?: formChange;
-    attributes?: Partial<Record<TAttributes, boolean | string>>;
+    attributes?: TAttributesProps;
     styles?: CSSProperties & { row?: number | string };
     validators?: validator[];
 
@@ -45,14 +57,14 @@ export interface formBuilderComponentProps {
 
 export interface IBaseComponent {
     type: FormItemType;
-    options: Array<{ label: string; value: any }> | string;
+    options: TOptions | string;
     name: string;
     label: string;
     value?: any;
     path: string;
     $$value?: any;
     $$component?: ElementType<formBuilderComponentProps> | null;
-    attributes?: Partial<Record<TAttributes, boolean>>;
+    attributes?: TAttributesProps;
     validation?: IValidation;
     styles?: CSSProperties & { row: number | string };
 }

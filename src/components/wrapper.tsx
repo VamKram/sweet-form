@@ -1,6 +1,6 @@
 import React, { ElementType, FC } from 'react';
 import TemplateEngine from '../helper/template-engine';
-import { get, isString } from "../utils";
+import { get, isString } from '../utils';
 import { useManage } from '../hooks';
 import { formBuilderComponentProps, HashObj, TAttributesProps } from '../types/project';
 

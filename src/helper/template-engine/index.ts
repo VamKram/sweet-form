@@ -55,7 +55,7 @@ class CalculateExpression extends TemplateExpression {
     }
 }
 
-export default class TemplateEngine<T extends HashObj> implements ITemplateEngine<T> {
+export default class TemplateEngine<T extends HashObj = HashObj> implements ITemplateEngine<T> {
     public static readonly symbolReg: RegExp = /^{{(.+)?}}$/i;
     public static readonly varReg: RegExp = /[A-Za-z.]+(?!["'a-z])/g;
 
@@ -78,6 +78,6 @@ export default class TemplateEngine<T extends HashObj> implements ITemplateEngin
 
     public execute(tpl: string, data: T, current?: any): TTemplateResult {
         const handler = this.getExpressionHandler(tpl, data);
-        return handler.analyse(tpl, data as T, current);
+        return handler.analyse(tpl, data, current);
     }
 }
