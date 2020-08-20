@@ -3,6 +3,7 @@ import { TComponentConfig } from '../types/project';
 import { FormItemType } from '../constant';
 import { adaptorComponent } from './wrapper';
 import { Checkbox, Input, Select, Radio, Switch, Cascader } from 'antd';
+import { noop } from "../utils";
 const { Option } = Select;
 
 const Config: TComponentConfig = {
@@ -22,6 +23,8 @@ const Config: TComponentConfig = {
     [FormItemType.SELECT]: adaptorComponent(props => {
         return (
             <Select
+                onSearch={props.onSearch || noop}
+                showSearch
                 mode={props.multiple && 'multiple'}
                 defaultValue={props.value}
                 style={{ width: 400 }}

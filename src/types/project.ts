@@ -24,6 +24,7 @@ export type TAsyncConfig = {
     url: string;
     method: TAjaxMethod;
     formatAction: string;
+    config: Object;
     body?: any;
     header?: Object;
 };

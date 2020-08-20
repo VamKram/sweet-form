@@ -70,7 +70,7 @@ export default class Manage<T extends HashObj> implements IManage<T> {
         });
     }
 
-    modifyTemplate(value, currentData?: any): any {
+    getTemplateResult(value, currentData?: any): any {
         return this.engine.execute(value, currentData || this.formData.result);
     }
 

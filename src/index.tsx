@@ -10,6 +10,7 @@ const schema = {
             checkbox: 'Apple',
             select: 'Apple',
             select1: 'Apple',
+            select2: 'Apple',
             radio: 'Apple',
         },
         textarea: '',
@@ -56,6 +57,21 @@ const schema = {
             attributes: {
                 multiple: true,
                 disabled: '{{+test.name % 2 == 1 ? true : false}}',
+            },
+            path: 'test.select1',
+        },
+        {
+            type: 'select',
+            name: 'select2',
+            label: 'asyncSelect2',
+            options: [],
+            attributes: {
+                multiple: false,
+                async: {
+                    url: "http://127.0.0.1:3000/mock/test/mark/my",
+                    method: "get",
+                    formatAction: "formatSelect"
+                },
             },
             path: 'test.select1',
         },
@@ -124,6 +140,7 @@ const schema = {
         'switch',
         'cascader',
         'select1',
+        'select2'
     ],
     // layout: [
     //     {
