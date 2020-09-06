@@ -29,6 +29,18 @@ export function isEmptyArray(params: any) {
     return Array.isArray(params) && params.length === 0;
 }
 
+export function isNull(params: any): params is null {
+    return params === null;
+}
+
+export function isNullOrUndefined(param: any): param is null | undefined {
+    return isNull(param) || isUndefined(param);
+}
+
 export function isAsyncConfig(param: any): param is TAsyncConfig {
     return param?.url && param?.method;
+}
+
+export function isEmpty(obj) {
+    return [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 }

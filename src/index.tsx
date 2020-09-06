@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import FormRender from './App';
 import demo from './components/originComponent';
+
 const schema = {
     data: {
         test: {
@@ -24,6 +25,11 @@ const schema = {
             name: 'name',
             label: 'name',
             path: 'test.name',
+            validation: {
+                rules: [
+                    'required',
+                ],
+            },
         },
         {
             type: 'checkbox',
@@ -68,9 +74,9 @@ const schema = {
             attributes: {
                 multiple: false,
                 async: {
-                    url: "http://127.0.0.1:3000/mock/test/mark/my",
-                    method: "get",
-                    formatAction: "formatSelect"
+                    url: 'http://127.0.0.1:3000/mock/test/mark/my',
+                    method: 'get',
+                    formatAction: 'formatSelect',
                 },
             },
             path: 'test.select1',
@@ -101,7 +107,7 @@ const schema = {
             path: 'gender',
             label: 'gender',
             attributes: {
-                disabled: "{{test.name === 'aaa'}}",
+                disabled: '{{test.name === \'aaa\'}}',
                 hidden: '{{+test.name % 2 == 1 ? true : false}}',
             },
         },
@@ -111,7 +117,8 @@ const schema = {
             path: 'textarea',
             label: 'textarea',
             attributes: {
-                disabled: "{{test.name === 'aaa'}}",
+                required: true,
+                disabled: '{{test.name === \'aaa\'}}',
             },
         },
         {
@@ -140,21 +147,8 @@ const schema = {
         'switch',
         'cascader',
         'select1',
-        'select2'
+        'select2',
     ],
-    // layout: [
-    //     {
-    //         element: [
-    //             'name',
-    //             {element: ['name', 'gender'] },
-    //             {element: ['age', 'gender'] },
-    //         ],
-    //     },
-    //     {
-    //         element: ['gender'],
-    //     },
-    //     'gender',
-    // ],
 };
 
 const data = {
@@ -167,6 +161,7 @@ const data = {
         { label: 'Orange', value: 'Orange' },
     ],
 };
+
 function formatSelect(val) {
     console.log('>>>>>>>>>val', val);
     return [{ label: 'aa', value: 'asad' }];

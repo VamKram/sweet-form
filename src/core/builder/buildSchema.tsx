@@ -21,9 +21,9 @@ interface IBuildSchema {
 }
 
 export default class BuildSchema implements IBuildSchema {
-    components: HashType<ReactNode> = {};
-    manage: Manage<HashObj>;
-    setComponents(data) {
+    public components: HashType<ReactNode> = {};
+    public manage: Manage<HashObj>;
+    public setComponents(data) {
         this.components = data;
     }
     constructor() {
@@ -64,7 +64,6 @@ export default class BuildSchema implements IBuildSchema {
     public buildComponentTree(component: TAllComponents, componentConfig?: TComponentConfig) {
         const { type, typeName } = component;
         let componentType: FormItemType | string = type;
-        console.log('>>>>>>>>>componentConfig', componentConfig);
         if (type === FormItemType.CUSTOM) {
             if (!typeName) {
                 console.error('custom must have typeName');
@@ -91,8 +90,6 @@ export default class BuildSchema implements IBuildSchema {
         return null;
     }
 
-    register(path: string): void {}
-
     private createJSX(compAttributes: TAllComponents): ReactElement | void {
         const {
             label,
@@ -103,19 +100,21 @@ export default class BuildSchema implements IBuildSchema {
             extension,
             name,
             options,
+            validation
         } = compAttributes;
         const triggerPath = `result.${path}`;
         if (Component) {
             return (
                 <Component
                     label={label}
-                    onFormChange={val => this.manage.notifyByPath(triggerPath, val)}
+                    onFormChange={val => this.manage.notifyByPath(triggerPath, val, {path})}
                     options={options}
                     key={name}
                     path={path}
                     styles={styles}
                     value={this.manage.formData as any}
                     attributes={attributes}
+                    validation={validation}
                     {...extension}
                 />
             );
@@ -150,5 +149,8 @@ export default class BuildSchema implements IBuildSchema {
             throw new RangeError(`${layoutInfo} is not exist in components`);
         }
         return this.createJSX(curComponentSchema) as ReactElement;
+    }
+
+    register(path: string): void {
     }
 }

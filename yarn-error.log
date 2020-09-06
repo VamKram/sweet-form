@@ -1,25 +1,21 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe D:\Users\junjiema\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add typescript
+  /Users/user/.nvm/versions/node/v10.15.1/bin/node /usr/local/lib/node_modules/yarn/bin/yarn.js install
 
 PATH: 
-  D:\Users\junjiema\Project\form-builder\node_modules\.bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;"C:\Program Files\Java\jdk1.7.0_60\bin;C:\Program Files\Java\jdk1.7.0_60\jre\bin";C:\JAVA\apache-maven-3.3.9\bin;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files (x86)\PuTTY\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\nvm-noinstall;C:\Program Files\MacType;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Go\bin;D:\Users\junjiema\AppData\Roaming\local\bin;D:\Users\junjiema\AppData\Local\Programs\Python\Python37-32\Scripts\;D:\Users\junjiema\AppData\Local\Programs\Python\Python37-32\;D:\Users\junjiema\AppData\Local\Microsoft\WindowsApps;D:\Users\junjiema\AppData\Local\Programs\Microsoft VS Code\bin;D:\Users\junjiema\AppData\Local\Programs\Fiddler;C:\Program Files\JetBrains\WebStorm 2019.1.1\bin;;C:\Program Files\JetBrains\JetBrains Rider 2019.1.1\bin;;D:\Users\junjiema\AppData\Roaming\npm;D:\Users\junjiema\AppData\Local\Microsoft\WindowsApps;D:\Users\junjiema\go\bin
+  /Users/user/.nvm/versions/node/v10.15.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS:/Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/bin:/Users/user/Public/apache-maven-3.5.4/bin
 
 Yarn version: 
-  1.10.1
+  1.7.0
 
 Node version: 
   10.15.1
 
 Platform: 
-  win32 x64
+  darwin x64
 
 Trace: 
-  SyntaxError: D:\Users\junjiema\Project\form-builder\package.json: Unexpected token } in JSON at position 2736
-      at JSON.parse (<anonymous>)
-      at D:\Users\junjiema\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1136:59
-      at Generator.next (<anonymous>)
-      at step (D:\Users\junjiema\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:98:30)
-      at D:\Users\junjiema\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:109:13
+  Error: getaddrinfo ENOTFOUND registry.npm.release.ctripcorp.com registry.npm.release.ctripcorp.com:80
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:57:26)
 
 npm manifest: 
   {
@@ -29,7 +25,7 @@ npm manifest:
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
     "files": [
-      "build"
+      "dist"
     ],
     "scripts": {
       "dev": "npx rollup -w -c ./pkgConfig/rollup.config.dev.js",
@@ -37,7 +33,7 @@ npm manifest:
       "install:trip": "npm install --registry=http://registry.npm.release.ctripcorp.com",
       "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
       "test": "jest --passWithNoTests -u",
-      "test:watch": "jest --coverage --watch",
+      "test:coverage": "jest --coverage",
       "test:prod": "npm run lint && npm run test -- --no-cache"
     },
     "repository": {
@@ -48,7 +44,6 @@ npm manifest:
       "form",
       "builder",
       "typescript",
-      "rxjs",
       "react"
     ],
     "author": "mark",
@@ -74,6 +69,7 @@ npm manifest:
       "@types/rollup-plugin-node-resolve": "^4.1.0",
       "@typescript-eslint/eslint-plugin": "^2.11.0",
       "@typescript-eslint/parser": "^2.11.0",
+      "antd": "^4.5.4",
       "autoprefixer": "^9.7.3",
       "enzyme": "^3.10.0",
       "enzyme-adapter-react-16": "^1.15.1",
@@ -103,7 +99,7 @@ npm manifest:
       "tslib": "^1.10.0",
       "tslint": "^5.20.0",
       "tslint-config-prettier": "^1.18.0",
-      "tslint-config-standard": "^8.0.1",
+      "tslint-config-standard": "^8.0.1"
     },
     "dependencies": {
       "@babel/polyfill": "^7.7.0",
@@ -114,12 +110,14 @@ npm manifest:
       "classnames": "^2.2.6",
       "core-js": "^3.3.3",
       "identity-obj-proxy": "^3.0.0",
+      "immer": "^7.0.7",
       "jest-environment-jsdom-fourteen": "^1.0.1",
       "jest-watch-typeahead": "^0.4.2",
       "react": "^16.11.0",
       "react-app-polyfill": "^1.0.5",
       "react-dom": "^16.11.0",
-      "rxjs": "^6.6.0"
+      "rxjs": "^6.6.2",
+      "typescript": "^3.9.7"
     },
     "jest": {
       "transform": {
@@ -138,8 +136,7 @@ npm manifest:
         "enzyme-to-json/serializer"
       ],
       "testMatch": [
-        "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-        "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+        "<rootDir>/**/test/**/*.{js,jsx,ts,tsx}"
       ],
       "testEnvironment": "jest-environment-jsdom-fourteen",
       "moduleFileExtensions": [
@@ -4787,6 +4784,11 @@ Lockfile:
     dependencies:
       minimist "^1.2.5"
   
+  mobx-react-lite@^2.0.7:
+    version "2.0.7"
+    resolved "http://registry.npm.release.ctripcorp.com/mobx-react-lite/download/mobx-react-lite-2.0.7.tgz#1bfb3b4272668e288047cf0c7940b14e91cba284"
+    integrity sha1-G/s7QnJmjiiAR88MeUCxTpHLooQ=
+  
   moo@^0.5.0:
     version "0.5.1"
     resolved "http://registry.npm.release.ctripcorp.com/moo/download/moo-0.5.1.tgz#7aae7f384b9b09f620b6abf6f74ebbcd1b65dbc4"
@@ -6965,10 +6967,10 @@ Lockfile:
     resolved "http://registry.npm.release.ctripcorp.com/type-fest/download/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
     integrity sha1-CeJJ696FHTseSNJ8EFREZn8XuD0=
   
-  typescript@3.3.1:
-    version "3.3.1"
-    resolved "http://registry.npm.release.ctripcorp.com/typescript/download/typescript-3.3.1.tgz#6de14e1db4b8a006ac535e482c8ba018c55f750b"
-    integrity sha1-beFOHbS4oAasU15ILIugGMVfdQs=
+  typescript@^3.9.7:
+    version "3.9.7"
+    resolved "http://registry.npm.release.ctripcorp.com/typescript/download/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
+    integrity sha1-mNYApevcOPQMsndSLxLcgA6eJfo=
   
   uglify-js@^3.4.9:
     version "3.10.0"

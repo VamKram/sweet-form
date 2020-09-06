@@ -6,18 +6,18 @@ import { HashType, ISchema, TOptions } from './types/project';
 import BuildSchema from './core/builder/buildSchema';
 
 export default function FormRender({
-    schema,
-    source,
-    actions,
-    componentLib,
-}: {
+                                       schema,
+                                       source,
+                                       actions,
+                                       componentLib,
+                                   }: {
     schema: ISchema;
     source: any;
     componentLib: HashType<ReactNode>;
     actions: HashType<(params: any) => TOptions>;
 }) {
     if (!schema) {
-        console.error("Must have props 'schema'");
+        console.error('Must have props \'schema\'');
         return null;
     }
 
@@ -30,7 +30,7 @@ export default function FormRender({
 
 function FormContent({ componentLib }) {
     const { current: builder } = useRef(new BuildSchema());
-    const [state] = useFormChange<ISchema>('a.b.c');
+    const [state] = useFormChange<ISchema>();
     const result = builder.build(state, componentLib);
     console.log('>>>>>>>>>state', state);
     return (

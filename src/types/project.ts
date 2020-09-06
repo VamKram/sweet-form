@@ -11,28 +11,28 @@ export type callback<T> = () => T;
 
 export type TAttributes = 'required' | 'disabled' | 'visible' | 'hidden' | 'multiple' | 'async';
 
-export type validator = (data: HashObj, notice: (error?: string) => ValidationResult) => ValidationResult;
+export type validator = ((data: HashObj) => [ValidationResult.FAIL, string] | ValidationResult.PASS);
 
-interface IValidation {
-    rules: validator[];
-    error: string[];
-    warn: string[];
+export interface IValidation {
+    rules: string[];
+    errors: string[];
+    warns: string[];
 }
 
 export type TAjaxMethod = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'getJSON';
-export type TAsyncConfig = {
+export interface TAsyncConfig {
     url: string;
     method: TAjaxMethod;
     formatAction: string;
     config: Object;
     body?: any;
     header?: Object;
-};
+}
 export type TAttributesProps = Partial<Record<TAttributes, boolean | string | TAsyncConfig>>;
 
 export type TOptions = Array<{ label: string; value: any }>;
 
-export interface commonComponentProps extends TAttributesProps {
+export interface ICommonComponentProps extends TAttributesProps {
     value: any;
     path: string;
     label: string;
@@ -40,10 +40,10 @@ export interface commonComponentProps extends TAttributesProps {
     onChange: formChange;
     onSearch: formChange;
     styles?: CSSProperties & { row?: number | string };
-    validators?: validator[];
+    validation?: IValidation;
 }
 
-export interface formBuilderComponentProps {
+export interface IFormBuilderComponentProps {
     value: any;
     path: string;
     label: string;
@@ -51,7 +51,7 @@ export interface formBuilderComponentProps {
     onFormChange?: formChange;
     attributes?: TAttributesProps;
     styles?: CSSProperties & { row?: number | string };
-    validators?: validator[];
+    validation?: IValidation;
 
     [key: string]: any;
 }
@@ -64,7 +64,7 @@ export interface IBaseComponent {
     value?: any;
     path: string;
     $$value?: any;
-    $$component?: ElementType<formBuilderComponentProps> | null;
+    $$component?: ElementType<IFormBuilderComponentProps> | null;
     attributes?: TAttributesProps;
     validation?: IValidation;
     styles?: CSSProperties & { row: number | string };
@@ -86,7 +86,7 @@ export type IFormComponentTree<T extends HashObj = HashObj> = T extends { type: 
 export type TAllComponents = CustomComponent & IBaseComponent;
 
 export type TSchemaLayout = Array<
-    { title?: string; element: (ArrayType<TSchemaLayout> | string)[] } | string
+    { title?: string; element: Array<ArrayType<TSchemaLayout> | string> } | string
 >;
 export interface ISchema {
     data: HashObj;
@@ -99,4 +99,4 @@ export type TComponentConfig = { [k in FormItemType]?: ReactNode | null };
 
 export type HashType<T> = { [k in string]: T };
 
-export type ArrayType<T> = T extends (infer R)[] ? R : never;
+export type ArrayType<T> = T extends Array<infer R> ? R : never;
