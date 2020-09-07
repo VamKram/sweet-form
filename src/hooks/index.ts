@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useRef } from 'react';
 import { IContextParams, SingleContext } from '../core';
 import { HashObj, IValidation } from '../types/project';
 
@@ -21,4 +21,12 @@ export function useValidation<T extends HashObj>(path: string, validation?: IVal
     useMemo(() => {
         managerIns.registryValidation(path, validation);
     }, []);
+}
+
+export function usePrevious<T>(value: T): T|undefined {
+    const ref = useRef<T>();
+    useEffect(() => {
+        ref.current = value;
+    }, [value]); // Only re-run if value changes
+    return ref.current;
 }
