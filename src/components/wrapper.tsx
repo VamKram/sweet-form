@@ -69,7 +69,7 @@ export const adaptorComponent = (Component: ElementType, config?: HashObj) => {
         }
 
         const error = Array.isArray(validation?.errors) && validation?.errors.map(([_, msg]) => <div
-            className="size-12 danger">{msg}</div>);
+            className="size-12 danger text-center">{msg}</div>);
         const requireComponent = formatAttributes.required && <span className="danger">*</span>;
         const labelComponent = label && <div className="field-label">{label}{requireComponent}</div>;
 

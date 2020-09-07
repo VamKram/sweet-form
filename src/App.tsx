@@ -20,7 +20,6 @@ export default function FormRender({
         console.error('Must have props \'schema\'');
         return null;
     }
-
     return (
         <FormProvider formData={schema} source={source} actions={actions}>
             <FormContent componentLib={componentLib} />
@@ -35,9 +34,6 @@ function FormContent({ componentLib }) {
     console.log('>>>>>>>>>state', state);
     return (
         <div className="pure-g">
-            <div style={{ width: '80%', whiteSpace: 'pre-line' }}>
-                {JSON.stringify(state.result || {}, null, 2)}
-            </div>
             {result}
         </div>
     );
