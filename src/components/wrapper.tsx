@@ -6,11 +6,12 @@ import { IFormBuilderComponentProps, HashObj, TAttributesProps } from '../types/
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { flatMap } from 'rxjs/operators';
 import { useValidation } from '../hooks';
+import classNames from "classnames";
 
 
 export const Wrapper: FC<{ title: string }> = ({ title, children }) => {
     return (
-        <div className="item-1-2">
+        <div className={classNames("item-1-2", {"wrapperCont": !!title})}>
             {title && <h1>{title}</h1>}
             {children}
         </div>

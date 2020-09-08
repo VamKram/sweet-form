@@ -26,11 +26,11 @@ const babelOptions = {
 }
 
 module.exports = [{
-    external: ['react', 'react-dom'],
-    globals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM'
-    },
+    // external: ['react', 'react-dom'],
+    // globals: {
+    //     'react': 'React',
+    //     'react-dom': 'ReactDOM'
+    // },
     input: resolve('src/index.tsx'),
     output: {
         dir: 'dist',
@@ -43,8 +43,8 @@ module.exports = [{
         commonjs({
             include: 'node_modules/**',
             namedExports: {
-                // react: Object.keys(react),
-                // 'react-dom': Object.keys(reactDom),
+                react: Object.keys(react),
+                'react-dom': Object.keys(reactDom),
                 'node_modules/react-is/index.js': ['isFragment', 'isMemo']
             },
         }),

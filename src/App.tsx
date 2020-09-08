@@ -1,10 +1,10 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
-import './App.less';
-import { FormProvider } from './core';
-import { useFormChange, usePrevious } from './hooks';
-import { HashObj, HashType, ISchema, TOptions } from './types/project';
-import BuildSchema from './core/builder/buildSchema';
-import { deepEqual } from './utils';
+import React, { ReactNode, useRef } from "react";
+import "./App.less";
+import { FormProvider } from "./core";
+import { useFormChange } from "./hooks";
+import { HashObj, HashType, ISchema, TOptions } from "./types/project";
+import BuildSchema from "./core/builder/buildSchema";
+import { deepEqual } from "./utils";
 
 export default function FormRender({
                                        schema,

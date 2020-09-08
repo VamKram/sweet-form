@@ -2,7 +2,7 @@ import React from 'react';
 import { TComponentConfig } from '../types/project';
 import { FormItemType } from '../constant';
 import { adaptorComponent } from './wrapper';
-import { Checkbox, Input, Select, Radio, Switch, Cascader } from 'antd';
+import { Checkbox, Input, Select, Radio, Switch, Cascader, DatePicker } from "antd";
 import { noop } from "../utils";
 const { Option } = Select;
 
@@ -27,7 +27,7 @@ const Config: TComponentConfig = {
                 showSearch
                 mode={props.multiple && 'multiple'}
                 defaultValue={props.value}
-                style={{ width: 400 }}
+                style={{ width: '100%' }}
                 onChange={props.onChange}
             >
                 {(props.options || []).map(({ label, value }) => (
@@ -54,6 +54,16 @@ const Config: TComponentConfig = {
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}
             />
+        );
+    }),
+    [FormItemType.DATE]: adaptorComponent(props => {
+        return (
+          <DatePicker
+            style={{width: '100%'}}
+            disabled={props.disabled}
+            value={props.value}
+            onChange={(date, dateString)=> props.onChange(date)}
+          />
         );
     }),
     [FormItemType.SWITCH]: adaptorComponent(props => {
@@ -100,7 +110,7 @@ const Config: TComponentConfig = {
                 ],
             },
         ];
-        return <Cascader options={options} onChange={props.onChange} />;
+        return <Cascader style={{width: '100%'}} options={options} onChange={props.onChange} />;
     }),
 };
 

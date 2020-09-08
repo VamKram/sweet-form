@@ -15,8 +15,8 @@ export type validator = ((data: HashObj) => [ValidationResult.FAIL, string] | Va
 
 export interface IValidation {
     rules: string[];
-    errors: string[];
-    warns: string[];
+    errors?: string[];
+    warns?: string[];
 }
 
 export type TAjaxMethod = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'getJSON';
@@ -83,7 +83,7 @@ export type IFormComponentTree<T extends HashObj = HashObj> = T extends { type: 
     ? CustomComponent
     : IBaseComponent;
 
-export type TAllComponents = CustomComponent & IBaseComponent;
+export type TAllComponents = Partial<CustomComponent & IBaseComponent>;
 
 export type TSchemaLayout = Array<
     { title?: string; element: Array<ArrayType<TSchemaLayout> | string> } | string

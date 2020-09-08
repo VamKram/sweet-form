@@ -3,6 +3,57 @@ import { safeEval } from '../src/helper/template-engine/safe-eval';
 // import { isUndefined } from "../src/utils";
 import * as utils from "../src/utils/checker";
 
+const sourceData = {
+  BornCityCN: "蚌埠市",
+  BornCityEN: "",
+  BornProvinceCN: "安徽省",
+  BornProvinceEN: "",
+  Borndate: "1990-05-01",
+  Email: "m4kemav@gmail.com",
+  ExpiryDate: "2020-09-08",
+  GivenNameCN: "啊",
+  GivenNameEN: "AA",
+  HomeAddrCityCN: "安庆市",
+  HomeAddrCityEN: "",
+  HomeAddrDetail2CN: "",
+  HomeAddrDetail2EN: "",
+  HomeAddrDetailCN: "上海市",
+  HomeAddrDetailEN: "",
+  HomeAddrDistrictCEN: "",
+  HomeAddrDistrictCN: "枞阳县",
+  HomeAddrPostcode: "",
+  HomeAddrProvinceCN: "安徽省",
+  HomeAddrProvinceEN: "",
+  HomeAddrProvinceID: "",
+  HomePostcode: "721000",
+  IssueAuthority: "",
+  IssueDate: "2020-09-08",
+  IssuePlace: "澳大利亚",
+  IssuePlaceEN: "",
+  NationalityCN: "中国大陆",
+  NationalityEN: "CN",
+  PassportNO: "23133",
+  PassportType: "香港签证身份书",
+  PassportURL: "",
+  Phone: "18115164284",
+  PhotoURL: "",
+  Sex: "M",
+  StayAddPostCode: "721000",
+  StayAddrDetail2CN: "",
+  StayAddrDetail2EN: "",
+  StayAddrDetailCN: "上海市",
+  StayAddrDetailEN: "",
+  StayAddrPostcode: "",
+  StayCityCN: "上海市",
+  StayCityEN: "",
+  SurnameCN: "啊啊",
+  SurnameEN: "AK",
+  TicketURL: "",
+  UsedNationalityCN: "",
+  UsedNationalityEN: "",
+  VisaType: "",
+  currentAddress: "安徽省安庆市枞阳县",
+}
 describe('template-engine', () => {
   it('should execute code', function() {
     const tpl = '{{a}}';
@@ -43,7 +94,7 @@ describe('template-engine', () => {
   it('execute expression should work', function() {
     const tpl = '{{1 + 1}}';
     const tplEngine = new TemplateEngine();
-    const result = tplEngine.execute(tpl);
+    const result = tplEngine.execute(tpl, {});
     expect(result).toEqual(2);
   });
 
@@ -110,4 +161,17 @@ describe('template-engine', () => {
     let result = tplEngine.execute(tpl, mockData);
     expect(result).toEqual(true);
   });
+  it('prod test', () => {
+    const tplEngine = new TemplateEngine();
+    const defaultData = tplEngine.execute(
+      "{{Borndate}}",
+      sourceData,
+    );
+    const defaultData1 = tplEngine.execute(
+      "{{IssuePlace}}",
+      sourceData,
+    );
+    expect(defaultData).toEqual("1990-05-01")
+    expect(defaultData1).toEqual("澳大利亚")
+  })
 });
