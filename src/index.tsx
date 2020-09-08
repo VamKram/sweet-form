@@ -9,6 +9,7 @@ import React from "react";
 // export default FormRender;
 //
 // export { FormRender, adaptorComponent, useManage };
+//TODO 每次修改都更新的问题 样式依赖外部 data的变化触发改动
 const schema = {
     data: {
         PassportNO: "",
