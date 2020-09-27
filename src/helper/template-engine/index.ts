@@ -1,9 +1,9 @@
 import { HashObj, TTemplateResult } from '../../types/project';
-import { get, isFunction, isTotalWord, isUndefined } from '../../utils';
+import { get, isFunction, isString, isTotalWord, isUndefined } from "../../utils";
 import { safeEval } from './safe-eval';
 
 interface ITemplateEngine<T extends HashObj> {
-    execute(tpl: string, data: T, current: any): TTemplateResult;
+    execute(tpl: string, data: T, current: any): TTemplateResult|TTemplateResult[];
 }
 // optimization
 interface IExpression<T> {
@@ -76,8 +76,17 @@ export default class TemplateEngine<T extends HashObj = HashObj> implements ITem
         return new CalculateExpression();
     }
 
-    public execute(tpl: string, data: T, current?: any): TTemplateResult {
-        const handler = this.getExpressionHandler(tpl, data);
-        return handler.analyse(tpl, data, current);
+
+
+    public execute(tpl: string|string[], data: T, current?: any): TTemplateResult|TTemplateResult[] {
+        if (isString(tpl)) {
+            const handler = this.getExpressionHandler(tpl as string, data);
+            return handler.analyse(tpl, data, current);
+        }
+        return tpl.map(item => {
+            const handler = this.getExpressionHandler(item, data);
+            return handler.analyse(item, data, current);
+        })
+
     }
 }

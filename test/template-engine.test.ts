@@ -43,7 +43,7 @@ describe('template-engine', () => {
   it('execute expression should work', function() {
     const tpl = '{{1 + 1}}';
     const tplEngine = new TemplateEngine();
-    const result = tplEngine.execute(tpl);
+    const result = tplEngine.execute(tpl, {});
     expect(result).toEqual(2);
   });
 
@@ -89,6 +89,17 @@ describe('template-engine', () => {
     let result = tplEngine.execute(tpl, mockData, { b: { c: 12 } });
     expect(result).toEqual([1]);
   });
+
+  it('expression list will works', () => {
+    const tpl = ["{{a}}"];
+    const mockData = {
+      a: 1
+    };
+    const tplEngine = new TemplateEngine();
+    let result = tplEngine.execute(tpl, mockData, { b: { c: 12 } });
+    expect(result).toEqual([1])
+  });
+
   it('compare should work', () => {
     const tpl = '{{a === "a"}}';
     const mockData = {
