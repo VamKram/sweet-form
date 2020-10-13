@@ -1,6 +1,6 @@
 {
-  "name": "form-builder",
-  "version": "1.0.0",
+  "name": "sweet-form",
+  "version": "1.0.1",
   "description": "form creator",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
